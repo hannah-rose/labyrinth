@@ -1,6 +1,6 @@
 # labyrinth
 
-The goal of this project was to create a fun, engaging, and/or informative simulation or game using the ENVIRO simulator. The Labyrinth project is an adaptation of the Greek Myth of Theseus and the Minotaur. Theseus enters the Labyrinth in search of the monster, and there he must navigate the maze, slay the Minotaur, and escape to safety.
+The goal of this project was to create a fun, engaging, and/or informative simulation or game using the ENVIRO simulator. The Labyrinth project is an adaptation of the Greek myth of Theseus and the Minotaur. Theseus enters the Labyrinth in search of the monster, and there he must navigate the maze, slay the Minotaur, and escape to safety.
 
 ![Maze](maze.png)
 
@@ -23,31 +23,31 @@ The key challenges of this project were:
 
 Theseus began as a directional robot. I spent a long time carefully tuning rotation and wall following before turning him into an omnidirectional robot. Now, a State Machine tracks Theseus' cardinal direction, so he can only move North, South, East, or West at any given time. When he reaches a wall or an intersection, he switches to the *Assessing* state and chooses the most open path.
 
-The next challenges, Localization and Memory, tie together. Theseus' goal is to explore the maze in search of the Minotaur, not to "solve" the maze per se. Thus, he needed a way to track where he had already been. At each intersection, I consolidate the four sensors into a vector, aligned with the four cardinal directions they represent. The direction we just came from, "the backtrack", gets a value of 0. Any direction that is blocked by a wall gets a value of -99. From there, we choose the most open path by selecting the highest value.
+The next challenges, Localization and Memory, tie together. Theseus' goal is to explore the maze in search of the Minotaur, not to "solve" the maze. Thus, he needed a way to track where he had already been. At each intersection, I consolidate the four sensors into a vector, aligned with the four cardinal directions they represent. After eliminating every path blocked by a wall and "the backtrack" path, we choose the most open path by selecting the highest remaining sensor value.
 
-That's Localization, an instantaneous look at where I am now, where I've been, and where I should go next. To form a complete path, each intersection is committed to memory. That way, when the robot has to backtrack - say, after reaching a dead end - I pop the most recent intersection and re-run the assessment. If there is another vali path, the robot will choose the new path. If not, we will continue to backtrack until a new path presents itself.
+That's Localization, an instantaneous look at where I am now, where I've been, and where I could go next. To form a complete path, each intersection is then committed to memory. That way, when the robot has to backtrack - say, after reaching a dead end - I pop the most recent intersection and re-run the assessment. If there was another valid path, the robot will take it. If not, we will continue to backtrack until a new path presents itself.
 
-The final piece of this challenge is ongoing. The "next step" in this project is to fully flesh out the *backtrack* state to walk through the stored memory and return to the start.
+The final piece of this challenge is ongoing. The "next step" in this project is to fully flesh out the *backtrack* state to walk through the stored memory and return to the start after Theseus defeats the Minotaur.
 
 ## Getting Started
 
-1. Clone this repository to your machine.
+Clone this repository to your machine.
 
-2. Start the docker container (Note that this project was developed using ENVIRO V1.4)
+Start the docker container (Note that this project was developed using ENVIRO V1.4)
 
 `docker run -p80:80 -p8765:8765 -v /c/projects/:/source -it klavins/enviro:v1.4 bash`
 
-3. Navigate to the root of the *labyrinth* repository and compile.
+Navigate to the root of the *labyrinth* repository and compile.
 
 `make`
 
-4. Start the ENVIRO server
+Start the ENVIRO server
 
 `esm start`
 
 `enviro`
 
-5. Navigate to http://localhost/ in any web browser.
+Navigate to http://localhost/ in any web browser.
 
 
 ## How to Play
