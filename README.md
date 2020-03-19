@@ -2,7 +2,7 @@
 
 The goal of this project was to create a fun, engaging, and/or informative simulation or game using the ENVIRO simulator. The Labyrinth project is an adaptation of the Greek Myth of Theseus and the Minotaur. Theseus enters the Labyrinth in search of the monster, and there he must navigate the maze, slay the Minotaur, and escape to safety.
 
-![Maze][maze.png]
+![Maze](maze.png)
 
 >In Greek mythology, the Labyrinth was constructed to contain the Minotaur, a creature half man, half bull. 
 >King Minos would imprison his enemies in the Labyrinth so that the Minotaur could eat them - the Labyrinth was
@@ -26,12 +26,15 @@ The key challenges of this project were:
 Clone this repository to your machine.
 
 Start the docker container (Note that this project was developed using ENVIRO V1.4)
+
 `docker run -p80:80 -p8765:8765 -v /c/projects/:/source -it klavins/enviro:v1.4 bash`
 
 Navigate to the root of the *labyrinth* repository and compile.
+
 `make`
 
 Start the ENVIRO server
+
 `esm start`
 `enviro`
 
