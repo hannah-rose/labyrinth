@@ -43,6 +43,13 @@ namespace {
         bool explore = true;
     };
 
+    class Chase : public State, public AgentInterface {
+        public:
+        void entry(const Event& e) {}
+        void during();
+        void exit(const Event& e) {}
+    };
+
     class TheseusController : public StateMachine, public AgentInterface {
 
         public:
@@ -62,6 +69,13 @@ namespace {
             add_transition("look around", move_north, assess);
             add_transition("look around", move_west, assess);
             add_transition("look around", move_east, assess);
+            add_transition("look around", chase, assess);
+
+            /* Transition to chase */
+            add_transition("chase_m", move_south, chase);
+            add_transition("chase_m", move_north, chase);
+            add_transition("chase_m", move_east, chase);
+            add_transition("chase_m", move_west, chase);
 
             move_east.set_sen(0,3,1);
             move_east.set_rate(5,0);
@@ -82,7 +96,11 @@ namespace {
             watch("screen_click", [&](Event &e) {
                 teleport(e.value()["x"], e.value()["y"],0);
                 e.stop_propagation();
-                emit(Event("look around", 5));
+                emit(Event("look around", 0));
+            });
+            notice_collisions_with("minotaur", [&](Event &e) {
+                /* Destruct the Minotaur */
+                emit(Event("look around", 0));
             });
             StateMachine::init();
         }
@@ -93,6 +111,8 @@ namespace {
         Moving move_east;
 
         Assessing assess;
+
+        Chase chase;
 
     };
 

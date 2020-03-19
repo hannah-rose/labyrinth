@@ -8,12 +8,14 @@ using namespace enviro;
 class MovingForward : public State, public AgentInterface {
     public:
     void entry(const Event& e) {}
-    void during() { 
-        track_velocity(4,0);
-        if ( sensor_value(0) < 40 ) {
-            emit(Event("turn"));
-        }    
-    }
+    void during();
+    void exit(const Event& e) {}
+};
+
+class Chase : public State, public AgentInterface {
+    public:
+    void entry(const Event& e) {}
+    void during();
     void exit(const Event& e) {}
 };
 
@@ -21,19 +23,9 @@ class Rotating : public State, public AgentInterface {
     public:
     void entry(const Event& e) { 
         rate = rand() % 2 == 0 ? 2 : -2; 
-        //decorate("<circle x='-5' y='5' r='5' style='fill: red'></circle>");
-        //label(sensor_reflection_type(0), 20, 5);
     }
-    void during() { 
-        track_velocity(0,rate); 
-        if ( sensor_value(0) > 140 ) {
-            emit(Event("wander"));
-        }   
-    }
-    void exit(const Event& e) {
-        decorate(""); 
-        clear_label();
-    }
+    void during();
+    void exit(const Event& e) {}
     double rate;      
 };
 
@@ -46,18 +38,23 @@ class MinotaurController : public StateMachine, public AgentInterface {
 
         add_transition("turn", moving_forward, rotating);
         add_transition("wander", rotating, moving_forward);
+        add_transition("wander", chase, moving_forward);
+        add_transition("chase", moving_forward, chase);
+        add_transition("chase", rotating, chase);
     }
 
-    /*void init() {
-        watch("screen_click", [&](Event &e) {
-            teleport(e.value()["x"], e.value()["y"],0);
-            e.stop_propagation();
+    /* Collision handler */
+    void init() {
+        notice_collisions_with("Theseus", [&](Event &e) {
+            /* Destruct the Minotaur */
+             remove_agent(1);
         });
         StateMachine::init();
-    }*/
+    }
 
     MovingForward moving_forward;
     Rotating rotating;
+    Chase chase;
 
 };
 

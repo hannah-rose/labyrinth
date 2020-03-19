@@ -35,6 +35,11 @@
         "type": "range",
         "location": { "x": 10, "y": 0 },
         "direction": 0
+      },
+      { 
+        "type": "range",
+        "location": { "x": -10, "y": 0 },
+        "direction": 3.14
       }
     ],
     "mass": 1,    

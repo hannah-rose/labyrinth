@@ -36,6 +36,7 @@ Navigate to the root of the *labyrinth* repository and compile.
 Start the ENVIRO server
 
 `esm start`
+
 `enviro`
 
 Navigate to http://localhost/ in any web browser.
