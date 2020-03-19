@@ -1,0 +1,10 @@
+bin/
+build/
+html/
+latex/
+tmp/
+~*
+*.o
+*.so
+*.a
+*/.vscode/

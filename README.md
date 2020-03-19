@@ -1,2 +1,3 @@
-# labyrinth
-Final project for EEP520
+18 March, 2020
+
+Deprecated. See labyrinth repository.
