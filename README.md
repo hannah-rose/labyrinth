@@ -19,32 +19,56 @@ The goal of this project was to create a fun, engaging, and/or informative simul
 The key challenges of this project were:
 * Motion
 * Localization
-* Memory - Theseus' string, if you will
+* Memory - *Theseus' string*, if you will
+
+Theseus began as a directional robot. I spent a long time carefully tuning rotation and wall following before turning him into an omnidirectional robot. Now, a State Machine tracks Theseus' cardinal direction, so he can only move North, South, East, or West at any given time. When he reaches a wall or an intersection, he switches to the *Assessing* state and chooses the most open path.
+
+The next challenges, Localization and Memory, tie together. Theseus' goal is to explore the maze in search of the Minotaur, not to "solve" the maze per se. Thus, he needed a way to track where he had already been. At each intersection, I consolidate the four sensors into a vector, aligned with the four cardinal directions they represent. The direction we just came from, "the backtrack", gets a value of 0. Any direction that is blocked by a wall gets a value of -99. From there, we choose the most open path by selecting the highest value.
+
+That's Localization, an instantaneous look at where I am now, where I've been, and where I should go next. To form a complete path, each intersection is committed to memory. That way, when the robot has to backtrack - say, after reaching a dead end - I pop the most recent intersection and re-run the assessment. If there is another vali path, the robot will choose the new path. If not, we will continue to backtrack until a new path presents itself.
+
+The final piece of this challenge is ongoing. The "next step" in this project is to fully flesh out the *backtrack* state to walk through the stored memory and return to the start.
 
 ## Getting Started
 
-Clone this repository to your machine.
+1. Clone this repository to your machine.
 
-Start the docker container (Note that this project was developed using ENVIRO V1.4)
+2. Start the docker container (Note that this project was developed using ENVIRO V1.4)
 
 `docker run -p80:80 -p8765:8765 -v /c/projects/:/source -it klavins/enviro:v1.4 bash`
 
-Navigate to the root of the *labyrinth* repository and compile.
+3. Navigate to the root of the *labyrinth* repository and compile.
 
 `make`
 
-Start the ENVIRO server
+4. Start the ENVIRO server
 
 `esm start`
 
 `enviro`
 
-Navigate to http://localhost/ in any web browser.
+5. Navigate to http://localhost/ in any web browser.
 
 
 ## How to Play
 
-How to run and/or use the project
+Theseus will automatically begin searching the Labyrinth for the Minotaur. The search is systematic - if he encounters a dead end, he will backtrack and continue.
+
+When Theseus eventually arrives in the center of the Labyrinth, the chase will commence. Both the Minotaur and Theseus are watching for the other, and they are ready to attack.
+
+![Minotaur Chase](minotaur_chase.png)
+
+### User Input
+
+Clicking the mouse anywhere on the screen will reposition Theseus. This can be fun if you want to explore a different section of the Labyrinth or go straight to the center.
+
+![Reposition](maze_reposition.png)
+
+### Game Over
+
+After the Minotaur is defeated, Theseus will begin searching for the way out of the maze.
+
+Note that to regenerate the Minotaur, you must re-run the *enviro* command.
 
 ## Sources
 * [ENVIRO](https://github.com/klavinslab/enviro)
